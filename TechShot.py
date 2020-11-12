@@ -4,6 +4,7 @@ from sprites import*             # These are modules that are imported in the pr
 import copy                      #
 from keychanges import keychange #
 from database import *
+from ceasarcipher import cipher
 
 pygame.init()       
 
@@ -917,7 +918,7 @@ class Menu(): # Menu class
                     self.menu_on=True
                     
                else:
-                   add(username.text,email.text,password.real_pass,"1")
+                   add(username.text,email.text,cipher(password.real_pass,3),"1")
                    self.new_game()
                    self.logged_in=True
                    self.menu_on=True
