@@ -5,7 +5,7 @@ def cipher(plaintext,key):
     characters = ("abcdefghijklmnopqrstuvwxyz1234567890")
         
     for i in range(0,len(characters)):
-        if (i+key) > len(characters)-1:
+        if (i+key) >= len(characters):
             ciphertext = {characters[i]:characters[(i%(len(characters)-key))]}
           
         else:
