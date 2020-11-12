@@ -799,11 +799,12 @@ class Menu(): # Menu class
              if username.text==row[counter]:
                  return True
                 
-    def linear_search(self,login):   #Linear search to find account
+                 
+    def linear_search(self,login_text):   #Linear search to find account
         counter=0
         cursor.execute("""SELECT Username,Password,Email,Level FROM players""") # SQL statement to fetch data
         for row in cursor.fetchall():
-             if (login.text==row[counter] or login.text==row[counter+2]) and loginpass.real_pass==row[counter+1]:
+             if (login_text==row[counter] or login_text==row[counter+2]) and cipher(loginpass.real_pass,50)==row[counter+1]:
                 self.login_text=row[counter]    
         
                 if row[3]=="2":
@@ -816,7 +817,7 @@ class Menu(): # Menu class
 
                 return True
             
-                if (login.text!=row[counter] or login.text!=row[counter+2]) and loginpass.real_pass!=row[counter+1]:
+                if (login_text!=row[counter] or login_text!=row[counter+2]) and loginpass.real_pass!=row[counter+1]:
                     counter+=1
                     
                 
@@ -844,7 +845,7 @@ class Menu(): # Menu class
         if self.action=="enter":
               if not self.logged_in:# Checks if user hasn't logged into an account already
                 if len(loginuser.text)>0 and len(loginpass.text)>0:
-                    if self.linear_search(loginuser) and self.login_text!=None:
+                    if self.linear_search(loginuser.text) and self.login_text!=None:
                          print("Account logged in")
                          self.menu_on=True
                          self.logged_in=True
@@ -918,7 +919,7 @@ class Menu(): # Menu class
                     self.menu_on=True
                     
                else:
-                   add(username.text,email.text,cipher(password.real_pass,3),"1")
+                   add(username.text,email.text,cipher(password.real_pass,50),"1")
                    self.new_game()
                    self.logged_in=True
                    self.menu_on=True
