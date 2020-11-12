@@ -791,14 +791,6 @@ class Menu(): # Menu class
             
         else:
             button.execute()
-    
-    def search(self):
-        counter=0
-        cursor.execute("""SELECT Username,Password,Email,Level FROM players""") # SQL statement to fetch data
-        for row in cursor.fetchall():
-             if username.text==row[counter]:
-                 return True
-                
                  
     def linear_search(self,login_text):   #Linear search to find account
         counter=0
