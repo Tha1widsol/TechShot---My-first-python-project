@@ -6,7 +6,7 @@ def cipher(plaintext,key):
         
     for i in range(0,len(characters)):
         if (i+key) > len(characters)-1:
-            ciphertext = {characters[i]:characters[(i%(25-key+1))]}
+            ciphertext = {characters[i]:characters[(i%(len(characters)-key+1))]}
           
         else:
             ciphertext = {characters[i]:characters[i+key]}
