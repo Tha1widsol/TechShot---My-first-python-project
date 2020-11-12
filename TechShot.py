@@ -791,7 +791,14 @@ class Menu(): # Menu class
             
         else:
             button.execute()
-                 
+               
+    def search_for_loginuser(self):
+        counter=0
+        cursor.execute("""SELECT Username,Password,Email,Level FROM players""") # SQL statement to fetch data
+        for row in cursor.fetchall():
+             if username.text==row[counter]:
+                 return True
+		
     def linear_search(self,login_text):   #Linear search to find account
         counter=0
         cursor.execute("""SELECT Username,Password,Email,Level FROM players""") # SQL statement to fetch data
@@ -906,7 +913,7 @@ class Menu(): # Menu class
         
         if self.action=="Enter":
            if len(email.text)>0 and len(username.text)>0 and len(password.text)>0:
-               if self.search():
+               if self.search_for_loginuser():
                     print("Account with username already exists.")
                     self.menu_on=True
                     
@@ -1207,8 +1214,10 @@ while execute:# This is the main loop that runs the entire program.
                     
     keys = pygame.key.get_pressed()
     click = pygame.mouse.get_pressed()
-   
-    menu.execute(Windowx)# Runs menu
+	
+    if __name__== "__main__":
+        menu.execute(Windowx)# Runs menu
+  
 
     pygame.display.update()
 
