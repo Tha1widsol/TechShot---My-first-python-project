@@ -1051,28 +1051,39 @@ class Input(Button): # Class for the inputs
         words = list(self.text)
         asterisk=list(self.text)
         Pass=list(self.real_pass)
-        if chr(key).isalpha() or chr(key).isdigit() and self.active:
-            words.append(chr(key))
-            if menu.accounts_page_on:
-                self.text= "".join(words)
-                if password.active or loginpass.active:
-                    asterisk.append("*")
-                    self.text= "".join(asterisk)
-                    Pass.append(chr(key))
-                    self.real_pass="".join(Pass)
+        try:
+            if chr(key).isalpha() or chr(key).isdigit() and self.active:
+                words.append(chr(key))
+                print(chr(key))
+                if menu.accounts_page_on:
+                    self.text= "".join(words)
+                    if password.active or loginpass.active:
+                        asterisk.append("*")
+                        self.text= "".join(asterisk)
+                        Pass.append(chr(key))
+                        self.real_pass="".join(Pass)
+                        print(self.real_pass)
+                else:
+                    self.text= "".join(words)[0] # This is for the settings page
 
-            else:
-                self.text= "".join(words)[0] # This is for the settings page
+
         
-        elif key==8:
-            words = list(self.text)
-            Pass=list(self.real_pass)
-            if len(words)>0:
-                words.pop()
-                self.text = "".join(words)
-            if len(Pass)>0:
-                Pass.pop()
-                self.real_pass="".join(Pass)
+
+            elif key==72 or key==80:
+               words.append("@")
+                
+                
+            elif key==8:
+                words = list(self.text)
+                Pass=list(self.real_pass)
+                if len(words)>0:
+                    words.pop()
+                    self.text = "".join(words)
+                if len(Pass)>0:
+                    Pass.pop()
+                    self.real_pass="".join(Pass)
+        except:
+             pass
                 
 # character objects
 player = User(430,705,200,10,5,12,32,walkleft,walkright,charshootleft,charshootright)  
