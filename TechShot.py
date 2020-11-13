@@ -1066,12 +1066,6 @@ class Input(Button): # Class for the inputs
                 else:
                     self.text= "".join(words)[0] # This is for the settings page
 
-
-        
-
-            elif key==72 or key==80:
-               words.append("@")
-                
                 
             elif key==8:
                 words = list(self.text)
