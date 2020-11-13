@@ -801,9 +801,10 @@ class Menu(): # Menu class
 		
     def linear_search(self,login_text):   #Linear search to find account
         counter=0
+        
         cursor.execute("""SELECT Username,Password,Email,Level FROM players""") # SQL statement to fetch data
         for row in cursor.fetchall():
-             if (login_text==row[counter] or login_text==row[counter+2]) and cipher(loginpass.real_pass,50)==row[counter+1]:
+             if (login_text==row[counter] or login_text==row[counter+2]) and cipher(loginpass.real_pass,30)==row[counter+1]:
                 self.login_text=row[counter]    
         
                 if row[3]=="2":
@@ -848,6 +849,8 @@ class Menu(): # Menu class
                          print("Account logged in")
                          self.menu_on=True
                          self.logged_in=True
+                         loginuser.text=""
+                         loginpass.real_pass=""
                          
                     else:
                         print("Account doesn't exist") # Error message if account doesn't exist
@@ -918,11 +921,13 @@ class Menu(): # Menu class
                     self.menu_on=True
                     
                else:
-                   add(username.text,email.text,cipher(password.real_pass,50),"1")
+                   add(username.text,email.text,cipher(password.real_pass,30),"1")
                    self.new_game()
                    self.logged_in=True
                    self.menu_on=True
                    self.login_text=username.text
+                   username.text=""
+                   password.real_pass=""
 
            else:
                print("Invalid details, please try again.")
@@ -1054,7 +1059,6 @@ class Input(Button): # Class for the inputs
         try:
             if chr(key).isalpha() or chr(key).isdigit() and self.active:
                 words.append(chr(key))
-                print(chr(key))
                 if menu.accounts_page_on:
                     self.text= "".join(words)
                     if password.active or loginpass.active:
@@ -1062,10 +1066,9 @@ class Input(Button): # Class for the inputs
                         self.text= "".join(asterisk)
                         Pass.append(chr(key))
                         self.real_pass="".join(Pass)
-                        print(self.real_pass)
+                     
                 else:
                     self.text= "".join(words)[0] # This is for the settings page
-
                 
             elif key==8:
                 words = list(self.text)
@@ -1075,10 +1078,10 @@ class Input(Button): # Class for the inputs
                     self.text = "".join(words)
                 if len(Pass)>0:
                     Pass.pop()
-                    self.real_pass="".join(Pass)
         except:
-             pass
-                
+            pass
+
+     
 # character objects
 player = User(430,705,200,10,5,12,32,walkleft,walkright,charshootleft,charshootright)  
 Robot=Enemy(680,50,7,1,enemywalk,enemyattackleft,enemyattackright,50,25)  
