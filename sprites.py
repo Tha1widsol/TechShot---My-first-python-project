@@ -1,67 +1,72 @@
 import pygame
+import os
 
-enemywalk=[pygame.image.load("RobotL1.png"),pygame.image.load("RobotL2.png"),pygame.image.load("RobotL3.png"),pygame.image.load("RobotL4.png")]
+##############################
+#Robot
+enemywalk=[pygame.image.load(os.path.join("sprites/Robot/Robot_walk",image)) for image in os.listdir(os.path.join("sprites/Robot","Robot_Walk"))]
+enemyattackleft=[pygame.image.load(os.path.join("sprites/Robot/Robotattackleft",image)) for image in os.listdir(os.path.join("sprites/Robot","Robotattackleft"))]
+enemyattackright=[pygame.image.load(os.path.join("sprites/Robot/Robotattackright",image)) for image in os.listdir(os.path.join("sprites/Robot","Robotattackright"))]
 
-enemyattackleft=[pygame.image.load("RobotDamage1L.png"),pygame.image.load("RobotDamage1L.png"),pygame.image.load("RobotDamage1L.png"),pygame.image.load("RobotDamage1L.png"),pygame.image.load("RobotDamage1L.png"),pygame.image.load("RobotDamage2L.png")]
-enemyattackright=[pygame.image.load("RobotDamage1R.png"),pygame.image.load("RobotDamage1R.png"),pygame.image.load("RobotDamage1R.png"),pygame.image.load("RobotDamage1R.png"),pygame.image.load("RobotDamage1R.png"),pygame.image.load("RobotDamage2R.png")]
 
-
+                      
 ############################################################################################################################################
 #Shooter
-shooterwalk=[pygame.image.load("shooterwalkleft1.png"),pygame.image.load("shooterwalkleft2.png"),pygame.image.load("shooterwalkleft3.png"),pygame.image.load("shooterwalkleft4.png"),]
-shootershootleft = [pygame.image.load("shootershootleft.png"),pygame.image.load("shootershootleft.png")]
-shootershootright = [pygame.image.load("shootershootright.png"),pygame.image.load("shootershootright.png")]
-
-
+shooterwalk=[pygame.image.load(os.path.join("sprites/Shooter/shooterwalk",image)) for image in os.listdir(os.path.join("sprites/Shooter","shooterwalk"))]
+shootershootleft = [pygame.image.load(os.path.join("sprites/Shooter","shootershootleft.png")),pygame.image.load(os.path.join("sprites/Shooter","shootershootleft.png"))]
+shootershootright= [pygame.image.load(os.path.join("sprites/Shooter","shootershootright.png")),pygame.image.load(os.path.join("sprites/Shooter","shootershootright.png"))]
 
 ############################################################################################################################################
 
 #red
-redwalking=[pygame.image.load("redwalking1.png"),pygame.image.load("redwalking2.png"),pygame.image.load("redwalking3.png"),pygame.image.load("redwalking4.png")]
-redattackingright=[pygame.image.load("redattackingright1.png"),pygame.image.load("redattackingright3.png")]
-redattackingleft =[pygame.image.load("redattackingleft1.png"),pygame.image.load("redattackingleft2.png"),pygame.image.load("redattackingleft3.png")]
+redwalking=[pygame.image.load(os.path.join("sprites/Redguy/Redwalk",image)) for image in os.listdir(os.path.join("sprites/Redguy","Redwalk"))]
+redattackingright=[pygame.image.load(os.path.join("sprites/Redguy/Redattackingright",image)) for image in os.listdir(os.path.join("sprites/Redguy","Redattackingright"))]
+redattackingleft =[pygame.image.load(os.path.join("sprites/Redguy/Redattackingleft",image)) for image in os.listdir(os.path.join("sprites/Redguy","Redattackingleft"))]
 
 #Flyer
-flyerwalking=[pygame.image.load("flyerleft1.png"),pygame.image.load("flyerleft2.png"),pygame.image.load("flyerleft3.png"),pygame.image.load("flyerleft4.png"),pygame.image.load("flyerleft5.png")]
-flyerattackingleft=[pygame.image.load("flyerattackleft1.png"),pygame.image.load("flyerattackleft2.png"),pygame.image.load("flyerattackleft3.png"),pygame.image.load("flyerattackleft4.png"),pygame.image.load("flyerattackleft5.png"),pygame.image.load("flyerattackleft6.png")]
-flyerattackingright =[pygame.image.load("flyerattackright1.png"),pygame.image.load("flyerattackright2.png"),pygame.image.load("flyerattackright3.png"),pygame.image.load("flyerattackright4.png"),pygame.image.load("flyerattackright5.png"),pygame.image.load("flyerattackright6.png")]
+flyerwalking=[pygame.image.load(os.path.join("sprites/Flyer/flyerwalk",image)) for image in os.listdir(os.path.join("sprites/Flyer","flyerwalk"))]
+flyerattackingleft=[pygame.image.load(os.path.join("sprites/Flyer/flyerattackleft",image)) for image in os.listdir(os.path.join("sprites/Flyer","flyerattackleft"))]
+flyerattackingright = [pygame.image.load(os.path.join("sprites/Flyer/flyerattackright",image)) for image in os.listdir(os.path.join("sprites/Flyer","flyerattackright"))]
 
 
 #User
-character = pygame.image.load("char.png")
-charshootright = pygame.image.load("charshootright.png")
-charshootleft = pygame.image.load("charshootleft.png")
-healthlogo = pygame.image.load("charshootright.png")
-charshootleft=[pygame.image.load("charshootleft.png"),pygame.image.load("charshootleftup.png")]
-charshootright=[pygame.image.load("charshootright.png"),pygame.image.load("charshootrightup.png")]
-walkright =[pygame.image.load("walkright1.png"),pygame.image.load("walkright2.png"),pygame.image.load("walkright3.png"),pygame.image.load("walkright4.png")]
-walkleft=[pygame.image.load("walkleft1.png"),pygame.image.load("walkleft2.png"),pygame.image.load("walkleft3.png"),pygame.image.load("walkleft4.png")]
+character = pygame.image.load(os.path.join("sprites/User","char.png"))
+healthlogo = pygame.image.load(os.path.join("sprites/User","healthlogo.png"))
+charshootleft=[pygame.image.load(os.path.join("sprites/User/charshootleft",image)) for image in os.listdir(os.path.join("sprites/User","charshootleft"))]
+charshootright=[pygame.image.load(os.path.join("sprites/User/charshootright",image)) for image in os.listdir(os.path.join("sprites/User","charshootright"))]
+walkright =[pygame.image.load(os.path.join("sprites/User/walkright",image)) for image in os.listdir(os.path.join("sprites/User","walkright"))]
+walkleft=[pygame.image.load(os.path.join("sprites/User/walkleft",image)) for image in os.listdir(os.path.join("sprites/User","walkleft"))]
 ############################################################################################################################################
 #Extras
-damage=pygame.image.load("damage.png")
-
+damage=pygame.image.load(os.path.join("sprites/Items","damage.png"))
+ammo_pic=pygame.image.load(os.path.join("sprites/Items","bullet.png"))
+health_pic=pygame.image.load(os.path.join("sprites/Items","healthitem.png"))
 
 	
 #######################################
 
 
-bosswalk= [pygame.image.load("bosswalkleft1.png"),pygame.image.load("bosswalkleft2.png"),pygame.image.load("bosswalkleft3.png"),pygame.image.load("bosswalkleft4.png")]
-bossfireleft = [pygame.image.load("bossfireleft1.png"),pygame.image.load("bossfireleft2.png")]
-bossfireright = [pygame.image.load("bossfireright1.png"),pygame.image.load("bossfireright2.png")]
-bossdeathleft=pygame.image.load("bossdeathleft.png")
+bosswalk= [pygame.image.load(os.path.join("sprites/Trevor/Trevorwalk",image)) for image in os.listdir(os.path.join("sprites/Trevor","Trevorwalk"))]
+bossfireleft = [pygame.image.load(os.path.join("sprites/Trevor/Trevorattackleft",image)) for image in os.listdir(os.path.join("sprites/Trevor","Trevorattackleft"))]
+bossfireright = [pygame.image.load(os.path.join("sprites/Trevor/Trevorattackright",image)) for image in os.listdir(os.path.join("sprites/Trevor","Trevorattackright"))]
+bossdeathleft=pygame.image.load(os.path.join("sprites/Trevor","bossdeathleft.png"))
 
 
 
 #####
-stevewalk = [pygame.image.load("stevewalk1.png"),pygame.image.load("stevewalk2.png"),pygame.image.load("stevewalk3.png"),pygame.image.load("stevewalk4.png")]
-steveattackleft =[pygame.image.load("steveattackleft.png"),pygame.image.load("steveattackleft.png")]
-steveattackright =[pygame.image.load("steveattackright.png"),pygame.image.load("steveattackright.png")]
-stevedeathleft=pygame.image.load("stevedeathleft.png")
+stevewalk = [pygame.image.load(os.path.join("sprites/Steve/stevewalk",image)) for image in os.listdir(os.path.join("sprites/Steve","Stevewalk"))]
+steveattackleft = [pygame.image.load(os.path.join("sprites/Steve","steveattackleft.png")),pygame.image.load(os.path.join("sprites/Steve","steveattackleft.png"))]
+steveattackright =[pygame.image.load(os.path.join("sprites/Steve","steveattackright.png")),pygame.image.load(os.path.join("sprites/Steve","steveattackright.png"))]
+stevedeathleft=pygame.image.load(os.path.join("sprites/Steve","stevedeathleft.png"))
 
 
 ############
-signuswalk = [pygame.image.load("signus1.png"),pygame.image.load("signus2.png"),pygame.image.load("signus3.png")]
-signusattackleft= [pygame.image.load("signusattack1.png"),pygame.image.load("signusattack2.png"),pygame.image.load("signusattack3.png"),pygame.image.load("signusattack4.png")]
-signusattackright= [pygame.image.load("signusattack1.png"),pygame.image.load("signusattack2.png"),pygame.image.load("signusattack3.png"),pygame.image.load("signusattack4.png")]
-signusdeathleft= pygame.image.load("signus1.png")
+signuswalk = [pygame.image.load(os.path.join("sprites/Signus/Signuswalk",image)) for image in os.listdir(os.path.join("sprites/Signus","Signuswalk"))]
+signusattackleft=[pygame.image.load(os.path.join("sprites/Signus/signusattackleft",image)) for image in os.listdir(os.path.join("sprites/Signus","signusattackleft"))]
+signusattackright= [pygame.image.load(os.path.join("sprites/Signus/signusattackright",image)) for image in os.listdir(os.path.join("sprites/Signus","signusattackright"))]
+signusdeathleft= pygame.image.load(os.path.join("sprites/Signus","signusdeath.png"))
+
+area1=[pygame.image.load(os.path.join("sprites/Backgrounds/Level 1",image)) for image in os.listdir(os.path.join("sprites/Backgrounds","Level 1"))]
+area2=[pygame.image.load(os.path.join("sprites/Backgrounds/Level 2",image)) for image in os.listdir(os.path.join("sprites/Backgrounds","Level 2"))]
+area3=[pygame.image.load(os.path.join("sprites/Backgrounds/Level 3",image)) for image in os.listdir(os.path.join("sprites/Backgrounds","Level 3"))]
+
 

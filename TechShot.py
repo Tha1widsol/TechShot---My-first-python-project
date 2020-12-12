@@ -2,17 +2,17 @@ import pygame                    #
 import random                    # 
 from sprites import*             # These are modules that are imported in the program
 import copy                      #
-from keychanges import keychange #
-from database import *
-from ceasarcipher import cipher
+from Extras.keychanges import keychange #
+from Extras.database import *
+from Extras.ceasarcipher import cipher
 
 pygame.init()       
 
 pygame.display.set_caption("TechShot")    
 
-Windowx=1000                        # These are global variables for the window size(1000 X 1000)
+Windowx=1000                    # These are global variables for the window size(1000 X 1000)
 Windowy=1000
-
+clock = pygame.time.Clock()
 screen = pygame.display.set_mode((Windowx,Windowy)) # This creates the screen
 
 Colours={"Red":(255,0,0),"Blue":(0,0,255),"Green":(0,255,0),"Grey":(128,128,128),"Black":(0,0,0),"Light Grey":(211,211,211),"White":(255,255,255),"Yellow":(255,255,0)}
@@ -443,10 +443,8 @@ class User(Character): # Class to make the player, it inherits from character
     def GUI(self): # Creates the GUI on the screen.    
         Text("Health",60,20,25)    
         screen.blit(charshootright[0],(-45,-22))
-        health_on_screen = pygame.image.load("healthitem.png")
-        screen.blit(health_on_screen,(210,5))
-        bullet_on_screen = pygame.image.load("bullet.png")
-        screen.blit(bullet_on_screen,(710,15))
+        screen.blit(health_pic,(210,5))
+        screen.blit(ammo_pic,(710,15))
         Text("Ammo:"+ str(self.ammo_capacity)+"/"+str(self.magazine),800,30,40)
         
     def execute(self,Windowx): # Executes the player
@@ -569,6 +567,7 @@ class Map(): # This puts all the objects together
         
     def execute(self,Windowx):
         screen.fill((self.background_colour))
+        clock.tick(25)
     
         boss_zone=(Windowx*(len(self.level)-1) - Windowx /2)
        
@@ -1093,8 +1092,8 @@ Steve = Boss(670,500,5,7,stevewalk,steveattackleft,steveattackright,stevedeathle
 Signus = Boss(680,800,5,10,signuswalk,signusattackleft,signusattackright,signusdeathleft,0,70,20,Colours["Red"],"Signus",150,12)
 
 #Item objects
-healthpack=Health_Item(705,pygame.image.load("healthitem.png"),50)
-bullets = Ammo(705,pygame.image.load("bullet.png"),4)
+healthpack=Health_Item(705,health_pic,50)
+bullets = Ammo(705,ammo_pic,4)
 
 #platforms
 
@@ -1105,8 +1104,7 @@ black_ground = Platform(2000,805,Windowx,40,Colours["Black"])
 wall = Wall(-40,10,30,800,Colours["Grey"])
 
 #Level 1 #############################################################################################
-platform=[metal_ground,black_ground]
-area1=[pygame.image.load("training.png"),pygame.image.load("training2.png"),pygame.image.load("training3.png"),pygame.image.load("stage1boss.png")]    
+platform=[metal_ground,black_ground]   
 level1={"chars":[],"items":[],"platforms":[metal_ground,black_ground],"area":area1,"walls":[wall]}
 
 level_1_boss_wall=Wall(Windowx * (len(area1) -1),10,10,1000,Colours["Red"])
@@ -1116,7 +1114,7 @@ clone(bullets,level1["items"],[1700,2800])
 clone(healthpack,level1["items"],[2000,3000])
 
 #Level 2 #############################################################################################
-area2=[pygame.image.load("level2area1.png"),pygame.image.load("level2area2.png"),pygame.image.load("level2area3.png"),pygame.image.load("level2area4.png")]
+
 grass = Platform(0,805,Windowx*len(area2)+1000,1000,Colours["Green"])
 green_wall =copy.copy(wall)
 green_wall.colour=Colours["Green"]
@@ -1130,7 +1128,6 @@ clone(healthpack,level2["items"],[2500,1500,2000])
 clone(bullets,level2["items"],[1000,2800,2300,1200])
 
 #Level 3#################################################################################################
-area3=[pygame.image.load("level3area1.png"),pygame.image.load("level3area2.png"),pygame.image.load("level3area3.png"),pygame.image.load("level3area4.png"),pygame.image.load("level3area5.png")]
 level_3_boss_wall=Wall(Windowx * (len(area3) -1),10,10,1000,Colours["Red"])
 stone=copy.copy(metal_ground)
 stone.Length=(Windowx * len(area3)-1)+1000
