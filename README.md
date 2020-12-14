@@ -7,9 +7,9 @@ I coded this game about 2 years ago when I first learned the basic fundamentals 
 How to Install / Setup the game:
 
 1. Install Python (Ideally the latest version)
-2. Setup pip(You can checkout a tutorial online if you're unsure. Once this is done, type "pip" in the cmd prompt and press enter. It should display a bunch of commands etc)
+2. Setup pip (You can checkout a tutorial online if you're unsure. Once this is done, type "pip" in the cmd prompt and press enter. It should display a bunch of commands etc)
 3. Install pygame by typing in "pip install pygame" and press enter in the cmd prompt
-4. Download/Extract all the files from the game on this site
+4. Download/Extract all the game files from the site on your computer
 5. Run the "TechShot.exe" file
 6. Enjoy!
 
