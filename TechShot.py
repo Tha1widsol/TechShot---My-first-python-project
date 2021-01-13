@@ -2,9 +2,6 @@ import pygame                    #
 import random                    # 
 from sprites import*             # These are modules that are imported in the program
 import copy                      #
-from Extras.keychanges import keychange #
-from Extras.database import *
-from Extras.ceasarcipher import cipher
 
 pygame.init()       
 
@@ -283,15 +280,16 @@ def Jump(obj,height,leap):  # Allow characters to jump
     if obj.JumpSpeed>=-10:    
                 neg=height    
                 if obj.JumpSpeed<0:    
-                    neg=-height  
+                    neg=-height 
                 
                 obj.Vertical -= (obj.JumpSpeed **2 * 0.5 * neg)
                 obj.JumpSpeed-=2
                 obj.Horizontal+=leap  
                 
     else:  
+        obj.JumpSpeed=10
         obj.Jumped=False    
-        obj.JumpSpeed=10          
+    
 
    
             
@@ -455,25 +453,20 @@ class User(Character): # Class to make the player, it inherits from character
  
           
 class Platform():    #Class for platform designs
-    def __init__(self,Horizontal,Vertical,Length,Height,colour):    
+    def __init__(self,Horizontal,Vertical,Length,Height,colour,platform=True):    
         self.Horizontal=Horizontal    
         self.Vertical=Vertical    
         self.Height=Height    
         self.Length=Length
         self.colour=colour
+        self.platform=platform
 
-
-            
     
     def make(self):    #Draws the platform
-        pygame.draw.rect(screen,(self.colour),(self.Horizontal,self.Vertical,self.Length,self.Height))    
-        object_movement(self,player.speed)
+         pygame.draw.rect(screen,(self.colour),(self.Horizontal,self.Vertical,self.Length,self.Height))    
+         object_movement(self,player.speed)
 
-       
 
-   
-
-        
 class Item(): #Item class that make items
     def __init__(self,Vertical,item_image):    
         self.Horizontal=None
@@ -726,62 +719,8 @@ class Menu(): # Menu class
         if self.action=="back":
             self.menu_on=True
 
-    def settings(self): # Settings page
-        self.set_background_colour()
-        Text("Press a key to change the controls",200,200,40)
-        Text("Press a key for moving left",320,300,30)
-        Text("Press a key for moving right",320,450,30)
-        Text("Press a key for jumping",350,590,30)
-        Text("Press a key for shooting",350,720,30)
-        self.display(reset_keys,"reset")
-        
-        self.Return()
-        for box in text_boxes:
-            box.execute()
-            if click[0]==1 and box.is_hovering(position):
-                if box.name=="left":
-                    key_left.active=True
-                    key_right.active=False
-                    key_jump.active=False
-                    key_shoot.active=False
-            
-                elif box.name=="right":
-                    key_left.active=False
-                    key_right.active=True
-                    key_jump.active=False
-                    key_shoot.active=False
-                    
-            
-                elif box.name=="jump":
-                    key_left.active=False
-                    key_right.active=False
-                    key_jump.active=True
-                    key_shoot.active=False
-                    
-                elif box.name=="shoot":
-                    key_left.active=False
-                    key_right.active=False
-                    key_jump.active=False
-                    key_shoot.active=True
-                    
-            keychange(key_left,"left",player) # Allows the player to change the keys
-            keychange(key_right,"right",player)
-            keychange(key_shoot,"shoot",player)
-            keychange(key_jump,"jump",player)
+   
 
-        if self.action=="reset": # Resets the buttons
-            player.keybindings["left"]=pygame.K_a
-            player.keybindings["right"]=pygame.K_d
-            player.keybindings["jump"]=pygame.K_w
-            player.keybindings["shoot"]=pygame.K_SPACE
-            
-            self.menu_on=True
-
-        if self.menu_on:
-            key_left.active=False
-            key_right.active=False
-            key_jump.active=False
-            key_shoot.active=False
             
     def display(self,button,Action):# Displays and checks if the player clicks on the button.
         if click[0]==1 and button.is_hovering(position):
@@ -790,82 +729,7 @@ class Menu(): # Menu class
             
         else:
             button.execute()
-               
-    def search_for_loginuser(self):
-        counter=0
-        cursor.execute("""SELECT Username,Password,Email,Level FROM players""") # SQL statement to fetch data
-        for row in cursor.fetchall():
-             if username.text==row[counter]:
-                 return True
-		
-    def linear_search(self,login_text):   #Linear search to find account
-        counter=0
-        
-        cursor.execute("""SELECT Username,Password,Email,Level FROM players""") # SQL statement to fetch data
-        for row in cursor.fetchall():
-             if (login_text==row[counter] or login_text==row[counter+2]) and cipher(loginpass.real_pass,30)==row[counter+1]:
-                self.login_text=row[counter]    
-        
-                if row[3]=="2":
-                    Level_1.done=True
-					   #Fetches accounts’ current levels
-
-                if row[3]=="3":
-                    Level_1.done=True
-                    Level_2.done=True
-
-                return True
             
-                if (login_text!=row[counter] or login_text!=row[counter+2]) and loginpass.real_pass!=row[counter+1]:
-                    counter+=1
-                    
-                
-                print("account index:",counter)
-
-    def Login(self):
-        self.accounts_page_on=True
-        self.set_background_colour()
-        self.Return()
-        Text("Username or email",400,420,30) # Messages on the screen
-        Text("Password",400,520,30)
-        self.display(loginenter,"enter")
-        
-        for box in account_boxes["login"]:
-            box.execute()
-            if click[0]==1 and box.is_hovering(position):
-                if box.name=="username":
-                    loginuser.active=True
-                    loginpass.active=False
-                    
-                elif box.name=="password":
-                    loginuser.active=False
-                    loginpass.active=True
-      
-        if self.action=="enter":
-              if not self.logged_in:# Checks if user hasn't logged into an account already
-                if len(loginuser.text)>0 and len(loginpass.text)>0:
-                    if self.linear_search(loginuser.text) and self.login_text!=None:
-                         print("Account logged in")
-                         self.menu_on=True
-                         self.logged_in=True
-                         loginuser.text=""
-                         loginpass.real_pass=""
-                         
-                    else:
-                        print("Account doesn't exist") # Error message if account doesn't exist
-                        self.menu_on=True
-        
-                else:
-                    print("Invalid login details, please try again")
-                    self.menu_on=True
-              else:              
-                print("Please log out first")
-                self.menu_on=True
-                   
-                        
-        if self.menu_on:
-           loginuser.active=False
-           loginpass.active=False
          
     def reset_game(self):# Resets the game for each level. This might not be the most efficient way to do it but it gets the job done.
         if Level_1.done or Level_2.done or Level_3.done:
@@ -885,79 +749,15 @@ class Menu(): # Menu class
             stone.Horizontal=0
             
 
-    def register(self): # Allows the player to register
-        self.set_background_colour()
-        self.accounts_page_on=True
-        
-        self.Return()
-        Text("Email",400,320,30)
-        Text("Username",400,420,30) # Messages on the screen
-        Text("Password",400,520,30)
-        self.display(enter,"Enter")
-
-        for box in account_boxes["register"]:
-            box.execute() # runs the object
-            if click[0]==1 and box.is_hovering(position):
-                if box.name=="Email":
-                    email.active=True
-                    username.active=False
-                    password.active=False
-                    
-                elif box.name=="username":
-                    username.active=True
-                    email.active=False
-                    password.active=False
-                    
-                elif box.name=="password":
-                    password.active=True
-                    email.active=False
-                    username.active=False
-        
-        if self.action=="Enter":
-           if len(email.text)>0 and len(username.text)>0 and len(password.text)>0:
-               if self.search_for_loginuser():
-                    print("Account with username already exists.")
-                    self.menu_on=True
-                    
-               else:
-                   add(username.text,email.text,cipher(password.real_pass,30),"1")
-                   self.new_game()
-                   self.logged_in=True
-                   self.menu_on=True
-                   self.login_text=username.text
-                   username.text=""
-                   password.real_pass=""
-
-           else:
-               print("Invalid details, please try again.")
-               self.menu_on=True
-               
-            
-        if self.menu_on:
-            email.active=False
-            username.active=False
-            password.active=False
-          
-          
        
     def execute(self,Windowx): # Executes the menu screen
         global execute
         self.set_background_colour()
         if self.menu_on:
-            if self.logged_in:
-                Text(self.login_text,35,20,40)
-                self.display(logout,"logout")
-                
-            else:
-                Text("Create an account or login to save your progress.",200,100,30)
-                
             Text("TechShot",35,200,250)
             self.display(playbutton,"play")
-            self.display(settings,"Settings")
             self.display(howtoplay,"howtoplay")
             self.display(Quit,"quit")
-            self.display(Account,"account")
-            self.display(login,"login")
             self.reset_game()
             player.Faceright=True
           
@@ -968,40 +768,20 @@ class Menu(): # Menu class
 
                
                 if Level_1.done:
-                    cursor.execute(""" UPDATE players SET Level=="2" WHERE Level=="1" AND Username==(?) """,(username.text,)) #Updates current level
-                    table.commit()
-                        
                     self.display(level2,"2")
 
                 if Level_2.done:
-                  
-                    cursor.execute(""" UPDATE players SET Level=="3" WHERE Level=="2" AND Username==(?) """,(username.text,)) #Updates current level
-                    table.commit()
-                       
                     self.display(level3,"3")
 
                 if Level_3.done:
                     self.menu_on=True
 
-            elif self.action=="account":
-                self.register()
                 
             elif self.action=="quit":
                 execute=False
           
-            elif self.action =="Settings":
-                self.settings()
-                
             elif self.action=="howtoplay":
                 self.howtoplay()
-           
-            elif self.action=="login":
-                self.Login()
-
-            elif self.action=="logout":
-                    self.logged_in=False
-                    self.menu_on=True
-                    self.new_game()
                     
             self.play(Windowx)
             
@@ -1029,11 +809,8 @@ class Pause_menu(Menu): # Class for the pause menu
                 
             Text(text,x,y,size)
             self.display(menubutton,"Return to menu")
-            self.display(midgamesettings,"settings")
-            if self.action=="settings":
-                self.settings()
                 
-            elif self.action=="Return to menu":
+            if self.action=="Return to menu":
                menu.menu_on=True
                self.action=""
                
@@ -1042,44 +819,6 @@ class Pause_menu(Menu): # Class for the pause menu
                 self.action=""
                 
                
-               
-class Input(Button): # Class for the inputs
-    def __init__(self,name,Horizontal,Vertical,width,height,colour=Colours["Light Grey"],text=""):
-        super().__init__(Horizontal,Vertical,width,height,colour,text="")
-        self.active=False
-        self.image = pygame.Surface((width,height))
-        self.name=name
-        self.real_pass=""
-        
-    def add_text(self,key): # Allows the player to type in a character.
-        words = list(self.text)
-        asterisk=list(self.text)
-        Pass=list(self.real_pass)
-        try:
-            if chr(key).isalpha() or chr(key).isdigit() and self.active:
-                words.append(chr(key))
-                if menu.accounts_page_on:
-                    self.text= "".join(words)
-                    if password.active or loginpass.active:
-                        asterisk.append("*")
-                        self.text= "".join(asterisk)
-                        Pass.append(chr(key))
-                        self.real_pass="".join(Pass)
-                     
-                else:
-                    self.text= "".join(words)[0] # This is for the settings page
-                
-            elif key==8:
-                words = list(self.text)
-                Pass=list(self.real_pass)
-                if len(words)>0:
-                    words.pop()
-                    self.text = "".join(words)
-                if len(Pass)>0:
-                    Pass.pop()
-        except:
-            pass
-
      
 # character objects
 player = User(430,705,200,10,5,12,32,walkleft,walkright,charshootleft,charshootright)  
@@ -1140,19 +879,14 @@ clone(bullets,level3["items"],[3500,3000,2700,1200,3700])
 
 #Buttons##########################################################################
 playbutton= Button(400,400,200,50,(Colours["Green"]),"Play")
-settings= Button(400,800,200,50,(Colours["Green"]),"Settings")
-Quit= Button(400,900,200,50,(Colours["Green"]),"Quit")
-howtoplay = Button (400,700,200,50,(Colours["Green"]),"How to play")
-Account = Button(400,600,200,50,(Colours["Green"]),"Register")
-menubutton = Button(400,400,200,50,(Colours["Green"]),"Return to menu")
+Quit= Button(400,600,200,50,(Colours["Green"]),"Quit")
+howtoplay = Button (400,500,200,50,(Colours["Green"]),"How to play")
+menubutton = Button(400,300,200,50,(Colours["Green"]),"Return to menu")
 Continue = Button(400,200,200,50,(Colours["Green"]),"Continue")
-midgamesettings=Button(400,300,200,50,(Colours["Green"]),"Settings")
 enter=Button(400,650,200,50,(Colours["Green"]),"Enter")
 controls = Button(400,300,200,50,(Colours["Green"]),"Controls")
 back = Button (100,800,200,50,(Colours["Green"]),"Return to menu")
-login=Button(400,500,200,50,(Colours["Green"]),"Login")
-logout=Button(700,15,200,50,(Colours["Green"]),"Logout")
-    
+
 #### 3 levels
 Level_1 = Map(player,level1["area"],level1["platforms"],level1["chars"],level1["items"],level1["walls"],Trevor,Colours["Grey"],level_1_boss_wall)
 Level_2 = Map(player,level2["area"],level2["platforms"],level2["chars"],level2["items"],level2["walls"],Steve,Colours["Green"],level_2_boss_wall)                
@@ -1163,24 +897,6 @@ level1=Button(400,150,200,50,(Colours["Green"]),"Level 1")
 level2=Button(400,250,200,50,(Colours["Green"]),"Level 2")
 level3=Button(400,350,200,50,(Colours["Green"]),"Level 3")
 
-key_left = Input("left",400,350,200,50)
-key_right= Input("right",400,500,200,50)
-key_jump = Input("jump",400,620,200,50)
-key_shoot = Input("shoot",400,750,200,50)
-
-email=Input("Email",400,350,200,50)
-username=Input("username",400,450,200,50)
-password =Input("password",400,550,200,50)
-
-loginuser=copy.copy(username)
-loginpass=copy.copy(password)
-loginenter=copy.copy(enter)
-
-account_boxes ={"register":[email,username,password],"login":[loginuser,loginpass]}
-text_boxes =[key_left,key_right,key_jump,key_shoot]
-
-
-reset_keys= Button(750,800,200,50,(Colours["Green"]),"Original keys")
 
 
 menu=Menu()
@@ -1193,29 +909,6 @@ while execute:# This is the main loop that runs the entire program.
         position = pygame.mouse.get_pos()
         if event.type == pygame.QUIT:
              execute=False
-        
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            for box in text_boxes:
-                box.is_hovering(pygame.mouse.get_pos())
-                
-            for box in account_boxes["register"]:
-                box.is_hovering(pygame.mouse.get_pos())
-                
-            for box in account_boxes["login"]:
-                box.is_hovering(pygame.mouse.get_pos())
-                
-        if event.type ==pygame.KEYDOWN:
-            for box in text_boxes:
-                if box.active:
-                    box.add_text(event.key)
-                    
-            for box in account_boxes["register"]:
-                if box.active:
-                    box.add_text(event.key)
-                    
-            for box in account_boxes["login"]:
-                if box.active:
-                    box.add_text(event.key)
                     
     keys = pygame.key.get_pressed()
     click = pygame.mouse.get_pressed()
